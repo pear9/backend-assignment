@@ -1,6 +1,8 @@
+require('dotenv').config();
 const { Sequelize } = require("sequelize");
-
-const sequelize = new Sequelize('postgres://exobtibd:F_y7ZnW-hkP1jkZKhOsA_AVNpF8mrnuZ@rajje.db.elephantsql.com/exobtibd')
+const database=process.env.postgres;
+console.log(database)
+const sequelize = new Sequelize(database);
 
 const testDbConnection = async () => {
     try {

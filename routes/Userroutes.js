@@ -3,7 +3,7 @@ const router= express.Router();
 
 const {register,login,getUser}=require('../controller/userController')
 
-router.route('/registration').post(register)
+router.post('/registration',register)
 router.route('/login/').post(login)
 router.route('/cuser/').get(getUser)
 
