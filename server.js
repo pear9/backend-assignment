@@ -1,12 +1,17 @@
 const express =require("express");
-const dotenv = require("dotenv"). config();
+const { testDbConnection } = require("./config/db");
+require('dotenv').config();
 const app= express();
-const port = process.env.PORT || 6000;
+const port = process.env.PORT;
 
-app.use(express.json);
+
+
+app.use(express.json());
 app.use('/product/',require('./routes/productroutes'));
-// app.use('/user/',require('./routes/Userroutes'));
+app.use('/user/',require('./routes/Userroutes'));
+testDbConnection();
+
 // app.use('/order/',require('./routes/orderroutes'));
 app.listen(port, () =>{
-console.log(port);
+console.log('server running on',port);
 }) ;
