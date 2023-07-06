@@ -4,6 +4,17 @@ const { DataTypes } = require("sequelize");
 const Order = require('./orderModel');
 const Product = require('./productModel');
 const OrderItem = sq.define('OrderItem', {
+
+  productId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    field: 'productId',
+  },
+  ordeId:{
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    field: 'orderId',
+  },
     quantity: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -14,9 +25,10 @@ const OrderItem = sq.define('OrderItem', {
     },
   });
   
-  OrderItem.belongsTo(Order);
-  OrderItem.belongsTo(Product);
-
+  OrderItem.associate = function (models) {
+    OrderItem.belongsTo(models.Order);
+    OrderItem.belongsTo(models.Product);
+};
   OrderItem.sync().then(() => {
     console.log("Orderitem Model synced");
   });

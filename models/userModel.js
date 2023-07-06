@@ -1,12 +1,17 @@
 const { sq } = require("../config/db");
 
 const { DataTypes } = require("sequelize");
-
-const User = sq.define("user", {
-    email: {
+const order = require("../models/orderModel")
+const User = sq.define("User", {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true,
+        autoIncrement: true,
+    },
+      email: {
       type: DataTypes.STRING,
       allowNull: false,
-      primaryKey: true,
     },
   
     fullName: {
@@ -22,6 +27,11 @@ const User = sq.define("user", {
         allowNull: false,
       }
   });
+
+
+  User.associate = function (models) {
+    User.hasMany(Order)
+  };
   User.sync().then(() => {
     console.log("User Model synced");
   });

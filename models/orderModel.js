@@ -2,14 +2,21 @@ const { sq } = require("../config/db");
 
 const { DataTypes } = require("sequelize");
 const User = require('./userModel');
-
+const OrderItem=require('./orderItem')
 const Order = sq.define('Order', {
-    totalAmount: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
+      id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            allowNull: false,
+            autoIncrement: true,
+        },
 
-    orderDate: {
+        userId: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
+            field: 'userId',
+        },
+       orderDate: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
@@ -20,8 +27,10 @@ const Order = sq.define('Order', {
     }
   });
   
-  Order.belongsTo(User);
-
+   Order.associate = (models) => {
+        Order.belongsTo(User, {foreignKey: 'userId'});
+        // Order.belongsTo(models.Address, {foreignKey: 'addressId'});
+    };
   Order.sync().then(() => {
     console.log("Order Model synced");
   });

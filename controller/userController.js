@@ -5,8 +5,8 @@ const bcrypt = require('bcrypt');
 
 //get
 const getUser= asyncHandler(async(req,res)=>{
-    
-    res.status(200).json({message:'user'})
+    console.log(req.user)
+    res.status(200).json(req.user)
 });
 //post
 const register= asyncHandler(async(req,res)=>{
@@ -46,14 +46,17 @@ const login= asyncHandler(async(req,res)=>{
                 userId: avaiable_user.id,
                 email: avaiable_user.email
               };
-              const accessToken = jwt.sign(payload, process.env.secretKey, { expiresIn: '1h' });
+              const accessToken = jwt.sign(payload, "your-secret-key", { expiresIn: '1h' });
               res.status(200).json(accessToken)
         }
         else{
             res.status(400).json({message:'wrong pwd'})
         }
     }
-    res.status(200).json({message:'login'})
+    else{
+        res.status(200).json({message:'not registred'})
+    }
+    
 });
 
 module.exports={getUser,register,login};
