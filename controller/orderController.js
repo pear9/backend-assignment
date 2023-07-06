@@ -36,7 +36,7 @@ const changeOrder= asyncHandler(async(req,res)=>{
     const t_order = await order.findOne({where:{
         userId:userId
     }})
-    
+    const uorder=await order.update({ordered:true},{where:{id:t_order.id}})
     const items = await orderItem.findAll({where:{
         orderId:order.id
     }})
