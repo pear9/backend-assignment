@@ -10,7 +10,7 @@ const OrderItem = sq.define('OrderItem', {
     allowNull: true,
     field: 'productId',
   },
-  ordeId:{
+  orderId:{
     type: DataTypes.INTEGER,
     allowNull: true,
     field: 'orderId',
@@ -26,9 +26,9 @@ const OrderItem = sq.define('OrderItem', {
   });
   
   OrderItem.associate = function (models) {
-    OrderItem.belongsTo(models.Order);
-    OrderItem.belongsTo(models.Product);
-};
+    OrderItem.belongsTo(Order);
+    OrderItem.belongsTo(Product);
+  }
   OrderItem.sync().then(() => {
     console.log("Orderitem Model synced");
   });

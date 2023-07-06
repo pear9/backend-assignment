@@ -27,10 +27,11 @@ const Order = sq.define('Order', {
     }
   });
   
-   Order.associate = (models) => {
-        Order.belongsTo(User, {foreignKey: 'userId'});
+  Order.associate = function (models) {
+    Order.hasMany(or)
+    Order.belongsTo(User, {foreignKey: 'userId'});
         // Order.belongsTo(models.Address, {foreignKey: 'addressId'});
-    };
+  }
   Order.sync().then(() => {
     console.log("Order Model synced");
   });
