@@ -6,20 +6,28 @@ const { where } = require("sequelize");
 
 const getOrder= asyncHandler(async(req,res)=>{
     const {userId}=req.user
-   const new_order=await order.findAll(
-        {where:{
-        ordered:false,
-
-    }});
-    if(!new_order){
-        res.status(400).json({message:'no order'})
+    const order_id= await order.findOne({where:{userId:userId,ordered:false}})
+    if(!order_id){
+        res.status(400).json({message:'empty cart'})
     }
-    const updated=await order.update({ordered:true}, {
-        where: {
-          id: req.params.id
-        }
-      });
+    console.log(order_id.id)
+   const new_order=await orderItem.findAll(
+        {where:{
+        orderId:order_id.id,
+    }}
+    );
+    if(!new_order){
+        res.status(400).json({message:'empty cart'})
+    }
     res.status(200).json(new_order)
+});
+
+const deleteOrder= asyncHandler(async(req,res)=>{
+    const {userId}=req.user
+    const torder= await order.findOne({where:{userId:userId,ordered:false}})
+    console.log(torder)
+    const order_item= await orderItem.destroy({where:{orderId:torder.id}})
+    res.status(200).json({message:'deleted'})
 });
 
 
@@ -61,17 +69,36 @@ const createorder=asyncHandler(async(req,res)=>{
         userId:userId
     })
     }
-    
     console.log(new_order.id,product_id)
+    const NNew_oitem=await orderItem.findOne({where:{
+        productId:product_id
+    
+    }})
+    if(NNew_oitem){
+        const new_oitem=await orderItem.destroy({where:{
+            productId:product_id
+        
+        }})
+        const tnew_oitem= await orderItem.create({
+            productId:product_id,
+            quantity:quantity,
+            orderId:new_order.id,
+            price:product.price
+            
+        })
+        console.log(tnew_oitem)
+        res.status(201).json(new_oitem)
+    }
+    else{
+    
     const new_oitem= await orderItem.create({
         productId:product_id,
         quantity:quantity,
         orderId:new_order.id,
         price:product.price
         
-        
     })
-    res.status(201).json(new_oitem)
+    res.status(201).json(new_oitem)}
 });
 
 
@@ -80,4 +107,4 @@ const createorder=asyncHandler(async(req,res)=>{
 
 
 
-module.exports={getOrder,createorder,changeOrder};
+module.exports={getOrder,createorder,changeOrder,deleteOrder};
