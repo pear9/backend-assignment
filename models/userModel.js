@@ -32,7 +32,7 @@ const User = sq.define("User", {
   User.associate = function (models) {
     User.hasMany(order)
   };
-  // // User.sync().then(() => {
-  // //   console.log("User Model synced");
-  // // });
+  User.sync().then(() => {
+    console.log("User Model synced");
+  });
   module.exports=User;
